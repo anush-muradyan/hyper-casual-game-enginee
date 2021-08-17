@@ -14,6 +14,7 @@ namespace Behaviour
         private void Awake()
         {
             dir = 1;
+            
             point = moveTransform == null ? 
                 camera.ScreenToWorldPoint(Vector3.right) : moveTransform.transform.localScale*2f;
         }

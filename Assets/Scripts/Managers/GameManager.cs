@@ -10,11 +10,12 @@ namespace Managers
     public class GameManager:MonoBehaviour
     {
         private Dictionary<Type, List<IGameState>> gameStates;
-
+        
         private void Awake()
         {
             compose();
         }
+        
 
         private void compose()
         {
