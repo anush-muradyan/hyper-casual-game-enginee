@@ -16,7 +16,6 @@ namespace Managers
             compose();
         }
         
-
         private void compose()
         {
             gameStates = new Dictionary<Type, List<IGameState>>();

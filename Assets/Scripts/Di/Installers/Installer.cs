@@ -1,20 +1,20 @@
-using System.ComponentModel;
-using Games;
-using Managers.MainScene;
+using Core;
+using Core.View;
+using UnityEngine;
 using Zenject;
 
 namespace Di.Installers
 {
-    public class Installer: MonoInstaller<Installer>
+    public class Installer : MonoInstaller<Installer>
     {
+        [SerializeField] private ViewManager viewManager;
+
         public override void InstallBindings()
         {
-            Container.Bind<MainScene>().AsSingle().NonLazy();
-            Container.Bind<First>().AsSingle().NonLazy();
-            Container.Bind<Second>().AsSingle().NonLazy();
-            Container.Bind<Third>().AsSingle().NonLazy();
-
-            Container.Bind<GameRunner>().AsSingle().NonLazy();
+            Container.Bind<ViewFactory>().AsSingle().NonLazy();
+            Container.Bind<IViewManager>().FromInstance(viewManager).AsSingle().NonLazy();
+            // Container.Bind<GameRunner>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<Startup>().AsSingle().NonLazy();
         }
     }
 }

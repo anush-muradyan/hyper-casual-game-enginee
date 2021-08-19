@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Games
 {
-    public class Second:MonoBehaviour,IGame
+    public class Second:Game
     {
         
     }
