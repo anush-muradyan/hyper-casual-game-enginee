@@ -1,10 +1,9 @@
-using Core;
 using Core.View;
 using Core.View.Factory;
 using UnityEngine;
 using Zenject;
 
-namespace Di.Installers
+namespace Core.Di.Installers
 {
     public class Installer : MonoInstaller<Installer>
     {

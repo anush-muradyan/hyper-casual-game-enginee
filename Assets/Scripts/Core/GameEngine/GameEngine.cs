@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Core.Game;
 using GameStates;
-using Tools;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -40,7 +39,7 @@ namespace Core.GameEngine
 
         private void AddType<T>() where T : class
         {
-            gameStates.Add(typeof(T), Utils.GetInterfaces<T, IGameState>());
+            
         }
 
         private List<T> ResolveType<T>() where T : class
