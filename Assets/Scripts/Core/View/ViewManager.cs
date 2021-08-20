@@ -1,3 +1,4 @@
+using Core.Data;
 using Core.Game;
 using Core.View.Factory;
 using UnityEngine;
@@ -29,7 +30,7 @@ namespace Core.View
 
         private void showGameSelectorView()
         {
-            IGameSelectorView view = factory.Create<GameSelectorView>();
+            var view = factory.Create<GameSelectorView>();
             view.OnGameSelected += handleGameSelected;
         }
 

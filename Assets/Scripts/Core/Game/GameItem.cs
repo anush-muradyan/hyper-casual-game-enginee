@@ -1,4 +1,5 @@
 using System;
+using Core.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,7 +22,7 @@ namespace Core.Game
 
         private void updateUI()
         {
-            gameTitleText.text = gameInfo.Name;
+            gameTitleText.text = gameInfo.Title;
         }
 
         private void OnEnable()

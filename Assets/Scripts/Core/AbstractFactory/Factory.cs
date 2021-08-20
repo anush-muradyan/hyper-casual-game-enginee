@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Core.AbstractFactory
 {
-    public abstract class Factory<TConfig> where TConfig:IFactoryConfig
+    public abstract class Factory<TConfig> where TConfig : IFactoryConfig
     {
         protected TConfig Config { get; }
 
