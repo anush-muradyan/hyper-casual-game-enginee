@@ -1,13 +1,14 @@
 using Core.View;
+using Core.View.Factory;
 using Zenject;
 
 namespace Core
 {
     public class Startup : IInitializable
     {
-        private readonly IViewManager viewManager;
+        private readonly IViewManager<ViewConfig> viewManager;
 
-        public Startup(IViewManager viewManager)
+        public Startup(IViewManager<ViewConfig> viewManager)
         {
             this.viewManager = viewManager;
         }

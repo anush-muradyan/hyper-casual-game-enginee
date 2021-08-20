@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "games": [
+    {
+      "id": 0,
+      "title": "Game 1",
+      "prefabName": "Game1",
+      "imageUrl": "www.some.com/image1.png"
+    },
+    {
+      "id": 1,
+      "title": "Game 2",
+      "prefabName": "Game2",
+      "imageUrl": "www.some.com/image2.png"
+    }
+  ]
+}

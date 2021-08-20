@@ -130,7 +130,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5880272831300427145}
   - component: {fileID: 5880272831300427146}
-  - component: {fileID: 5880272831300427147}
   m_Layer: 5
   m_Name: Game2
   m_TagString: Untagged
@@ -179,20 +178,6 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: 1
   m_LayoutPriority: 1
---- !u!114 &5880272831300427147
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5880272831300427144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05b59712b69e049318fe2e09cb5f3017, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameTitleText: {fileID: 5880272832600314874}
-  button: {fileID: 2442604929918604664}
 --- !u!1 &5880272831350036281
 GameObject:
   m_ObjectHideFlags: 0
