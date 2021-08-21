@@ -1,4 +1,3 @@
-using Core.View;
 using UnityEngine;
 
 namespace Core.AbstractFactory
@@ -20,6 +19,8 @@ namespace Core.AbstractFactory
             return obj;
         }
 
+        
+        
         protected abstract T InternalCreate<T>(T prefab) where T : Object;
     }
 }

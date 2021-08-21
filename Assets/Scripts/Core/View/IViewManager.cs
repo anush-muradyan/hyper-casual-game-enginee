@@ -1,5 +1,4 @@
 using Core.AbstractFactory;
-using Core.View.Factory;
 
 namespace Core.View
 {

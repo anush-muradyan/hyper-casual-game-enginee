@@ -1,5 +1,3 @@
-using Core.AbstractFactory;
-using Core.Data;
 using Core.Game;
 using UnityEngine;
 

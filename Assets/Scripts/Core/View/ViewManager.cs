@@ -1,26 +1,39 @@
 using Core.Data;
-using Core.Game;
+using Core.GameCore;
 using Core.View.Factory;
 using UnityEngine;
+using UnityEngine.Events;
 using Zenject;
 
 namespace Core.View
 {
-    public class ViewManager : MonoBehaviour, IViewManager<ViewConfig>
+    public class ViewManager : MonoBehaviour, IViewManager<ViewConfig>,INotify
     {
         [SerializeField] private RectTransform viewContainer;
         [SerializeField] private string viewPath;
+        
         private ViewFactory factory;
+        private GameEngine gameEngine;
 
+        public UnityEvent<GameInfo> OnGame = new UnityEvent<GameInfo>();
+        private IGameSelectorView view;
+        
         [Inject]
-        private void construct(ViewFactory factory)
+        private void construct(ViewFactory factory,GameEngine gameEngine)
         {
             this.factory = factory;
+            this.gameEngine = gameEngine;
         }
 
         public void Startup()
         {
             showGameSelectorView();
+        }
+
+        private void OnDisable()
+        {
+            view.OnGameSelected -= handleGameSelected;
+            OnGame.RemoveListener(gameEngine.InstantiateGame);
         }
 
         public ViewConfig GetConfig()
@@ -30,15 +43,23 @@ namespace Core.View
 
         private void showGameSelectorView()
         {
-            var view = factory.Create<GameSelectorView>();
+            view = factory.Create<GameSelectorView>();
             view.OnGameSelected += handleGameSelected;
         }
 
-        private void handleGameSelected(GameInfo gameInfo)
+        public void handleGameSelected(GameInfo gameInfo)
         {
             Debug.LogError(gameInfo);
-            // Instantiate(Resources.Load("Prefabs/Games/" + gameInfo.Name),viewContainer);
-            //gameEngine.OnGame.AddListener(gameInfo => new GameInfo(gameInfo.Name,gameInfo.Code));
+            GameSelected(gameInfo);
+        }
+
+        public void GameSelected(GameInfo gameInfo)
+        {
+            OnGame.AddListener(gameEngine.InstantiateGame);
+            OnGame?.Invoke(gameInfo);
+            
+            /*view.OnGameSelected -= handleGameSelected;
+            OnGame.RemoveListener(gameEngine.InstantiateGame)*/;
         }
     }
 }

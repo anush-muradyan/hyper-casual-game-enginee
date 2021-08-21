@@ -1,14 +1,14 @@
 using System;
+using System.Collections.Generic;
 using Core.Data;
 using Core.Data.Game;
 using Core.Game;
-using Core.View.Factory;
 using UnityEngine;
 using Zenject;
 
 namespace Core
 {
-    public interface IGameSelectorView
+    public interface IGameSelectorView : IDisposable
     {
         event Action<GameInfo> OnGameSelected;
     }
@@ -18,6 +18,8 @@ namespace Core
         [SerializeField] private GameItem gameItemPrefab;
         [SerializeField] private RectTransform container;
         private IDataLoader dataLoader;
+        private List<GameItem> gameItems = new List<GameItem>();
+
 
         public event Action<GameInfo> OnGameSelected;
 
@@ -26,7 +28,7 @@ namespace Core
         {
             this.dataLoader = dataLoader;
         }
-        
+
         private void Start()
         {
             loadGameInfos();
@@ -37,7 +39,7 @@ namespace Core
             var games = dataLoader.LoadGameInfos();
             if (games == null)
             {
-                Debug.LogError("Vay qu ara");
+                Debug.LogError("Error loading games.");
                 return;
             }
 
@@ -48,6 +50,7 @@ namespace Core
         {
             foreach (GameInfo game in games.Games)
             {
+
                 createGameInfo(game);
             }
         }
@@ -55,8 +58,18 @@ namespace Core
         private void createGameInfo(GameInfo game)
         {
             IGameItem item = Instantiate(gameItemPrefab, container);
+            gameItems.Add((GameItem) item);
             item.OnSelected += OnGameSelected;
             item.Setup(game);
+        }
+
+        public void Dispose()
+        {
+            foreach (var game in gameItems)
+            {
+                game.OnSelected -= OnGameSelected;
+                Destroy(game);
+            }
         }
     }
 }
