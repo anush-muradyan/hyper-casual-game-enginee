@@ -36,7 +36,7 @@ namespace Core.GameCore
         {
             var game = Instantiate(Resources.Load(gameConfig.Path 
                                                   + gameInfo.PrefabName), gameConfig.Container);
-
+            Debug.Log(game.name);
         }
     }
 }
