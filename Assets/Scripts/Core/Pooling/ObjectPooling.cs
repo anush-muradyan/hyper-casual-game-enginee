@@ -29,7 +29,7 @@ namespace Core.Pooling
             }
         }
 
-        private GameObject SpawnToPool(string name)
+        public GameObject SpawnToPool(string name)
         {
             if (!PoolDictionary.ContainsKey(name))
             {
@@ -57,12 +57,12 @@ namespace Core.Pooling
             return SpawnToPool(name);
         }
 
-        private GameObject BackToPool(string name)
+        public void BackToPool(string name)
         {
             if (!PoolDictionary.ContainsKey(name))
             {
                 Debug.LogError("That pool with name " + name + " doesnt exist.");
-                return null;
+                return;
             }
 
             foreach (var obj in PoolDictionary[name])
@@ -71,12 +71,10 @@ namespace Core.Pooling
                 {
                     obj.SetActive(false);
                     PoolDictionary[name].Enqueue(obj);
-                    return obj;
+                    return;
                 }
             }
-
-            return null;
         }
-
+        
     }
 }
