@@ -8,50 +8,83 @@ namespace Games.SquareFall
     public class GameController : MonoBehaviour
     {
         [SerializeField] private ObjectPooling pool;
-        [SerializeField] private Enemies enemy;
-        [SerializeField] private Line line;
         [SerializeField] private Player player;
-       
-        [SerializeField] private int minRotationRange = -20;
-        [SerializeField] private int maxRotationRange = 20;
+        [SerializeField] private ScreenSize screenSize;
+        [SerializeField] private int minRotationRange ;
+        [SerializeField] private int maxRotationRange ;
 
         private bool canplay;
-        
+        private int count;
+        private const float waitForSecond=0.7f;
+
         private void Start()
         {
+            startGame();
+            player.onScore.AddListener(OnScore);
+            player.onGameOver.AddListener(OnGameOver);
+        }
+
+        private void startGame()
+        {
             canplay = true;
-            StartCoroutine(CreateEnemies());
+            StartCoroutine(CreateEnemiesAndBonusItems());
         }
 
-        private void OnEnable()
+        private void Update()
         {
-            player.onGameOver.AddListener(gameOver);
-        }
-
-        private void OnDisable()
-        {
-            player.onGameOver.RemoveListener(gameOver);
-        }
-
-        private void gameOver()
-        {
-            canplay = false;
-        }
-
-        private IEnumerator CreateEnemies()
-        {
-            while (canplay)
+            if (Input.GetKeyDown(KeyCode.A) && !canplay)
             {
-                yield return new WaitForSeconds(0.8f);
-
-                var en = pool.SpawnToPool(enemy.transform.gameObject.name);
-                var angle = Random.Range(minRotationRange, maxRotationRange);
-                en.transform.localRotation = Quaternion.Euler(Vector3.forward * angle);
-                line.OnPooling.AddListener(pool.BackToPool);
-               
-                yield return en;
+                RestartGame();
             }
         }
 
+        private void RestartGame()
+        {
+            StopCoroutine(CreateEnemiesAndBonusItems());
+            player.reset();
+            startGame();
+        }
+        
+        private void OnScore()
+        {
+            player.AddScore();
+        }
+
+        private void OnGameOver()
+        {
+            canplay = false;
+            Debug.LogError("GAME OVER!");
+        }
+
+        private IEnumerator CreateEnemiesAndBonusItems()
+        {
+            while (canplay)
+            {
+                yield return new WaitForSeconds(waitForSecond);
+
+                if (count++ >= 4)
+                {
+                   var bonusGameObject = pool.SpawnToPool<BonusItem>();
+                   bonusGameObject = randomRotate(bonusGameObject);
+                   
+                   count = 0;
+                   yield return bonusGameObject;
+                   yield return new WaitForSeconds(waitForSecond);
+                }
+                
+                var enemyGameObject = pool.SpawnToPool<Enemy>();
+                enemyGameObject = randomRotate(enemyGameObject);
+                ++count;
+                yield return enemyGameObject;
+            }
+        }
+
+        private GameObject randomRotate(GameObject gameObj)
+        {
+            var angle = Random.Range(minRotationRange, maxRotationRange);
+            gameObj.transform.localRotation = Quaternion.Euler(Vector3.forward * angle);
+            gameObj.transform.position = new Vector3(0f, Mathf.Abs(screenSize.width), 0f);
+            return gameObj;
+        }
     }
 }
