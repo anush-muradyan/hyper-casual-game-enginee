@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using ModestTree;
 using UnityEngine;
 
 namespace Core.Pooling
@@ -15,6 +16,11 @@ namespace Core.Pooling
 
         private void Start()
         {
+           initializePoolDictionary();
+        }
+
+        public void initializePoolDictionary()
+        {
             PoolDictionary = new Dictionary<string, Queue<GameObject>>();
             foreach (var pool in pools)
             {
@@ -28,52 +34,42 @@ namespace Core.Pooling
                 }
             }
         }
-
-        public GameObject SpawnToPool(string name)
+        
+        public GameObject SpawnToPool<T>()
         {
+            var name = typeof(T).Name;
+            
             if (!PoolDictionary.ContainsKey(name))
             {
                 Debug.LogError("That pool with name " + name + " doesnt exist.");
                 return null;
             }
 
-            foreach (var obj in PoolDictionary[name])
+            if (PoolDictionary[name].IsEmpty())
             {
-                if (!obj.activeSelf)
+                var pool = pools.FirstOrDefault(pool => pool.prefab.name.Equals(name));
+                for (int i = 0; i < capacity; i++)
                 {
-                    obj.SetActive(true);
-                    return obj;
+                    GameObject poolingObject = Instantiate(pool.prefab);
+                    poolingObject.SetActive(false);
+                    PoolDictionary[name].Enqueue(poolingObject);
+                    
                 }
             }
-
-            var pool = pools.FirstOrDefault(pool => pool.prefab.name.Equals(name));
-            for (int i = 0; i < capacity; i++)
-            {
-                GameObject obj = Instantiate(pool.prefab);
-                obj.SetActive(false);
-                PoolDictionary[name].Enqueue(obj);
-            }
-
-            return SpawnToPool(name);
+            
+            var obj = PoolDictionary[name].Dequeue();
+            obj.SetActive(true);
+            return obj;
+            
         }
-
-        public void BackToPool(string name)
+        
+        
+        public void BackToPool(GameObject poolingUnit)
         {
-            if (!PoolDictionary.ContainsKey(name))
-            {
-                Debug.LogError("That pool with name " + name + " doesnt exist.");
-                return;
-            }
-
-            foreach (var obj in PoolDictionary[name])
-            {
-                if (obj.activeSelf)
-                {
-                    obj.SetActive(false);
-                    PoolDictionary[name].Enqueue(obj);
-                    return;
-                }
-            }
+             string key = poolingUnit.gameObject.name.Split('(')[0];
+             
+             poolingUnit.SetActive(false);
+             PoolDictionary[key].Enqueue(poolingUnit);
         }
         
     }
