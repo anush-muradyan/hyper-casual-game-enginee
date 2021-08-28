@@ -1,3 +1,6 @@
+using Core.ObjectPooling;
+using DG.Tweening;
+using ObjectPoolingV2.CorePooling.Factory;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -5,40 +8,49 @@ namespace Games.SquareFall
 {
     public class Player : MonoBehaviour
     {
-        [SerializeField] private float speed;
         [SerializeField] private Transform moveTransform;
+        [SerializeField] private PoolManager poolManager;
         
         public UnityEvent onGameOver = new UnityEvent();
         public UnityEvent onScore = new UnityEvent();
         
-        private bool gameOver;
-        private int score;
+        
+        private Vector3 currentTargetPos;
+        private Vector3 finalPos;
+        private float duration;
 
-        private int dir = 1;
 
-        private void Update()
+        void Start()
         {
-            Move();
+            transform.position = Vector3.zero;
+            finalPos = 2 * moveTransform.localScale;
+            currentTargetPos = finalPos;
+            duration = 2f;
+            transform.DOMoveX(finalPos.x, 1f).OnComplete(MoveObj(currentTargetPos,duration)).SetDelay(0.5f);
+            
         }
 
-        private void Move()
+        private TweenCallback MoveObj(Vector3 pos,float moveDuration)
         {
-            transform.Translate(Vector3.right * (speed * dir * Time.deltaTime));
+            transform.DOMoveX(pos.x, 2f).OnUpdate(OnChangeDirection).OnComplete(() => MoveObj(currentTargetPos,moveDuration));
 
-            if (Mathf.Abs(transform.position.x) >= Mathf.Abs((moveTransform.transform.localScale * 2f).x))
+            currentTargetPos = -currentTargetPos ;
+            moveDuration = (finalPos.x - transform.position.x) / 2f;
+            return null;
+        }
+      
+        private void OnChangeDirection()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                dir *= -1;
-            }
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                dir *= -1;
+                transform.DOKill();
+                MoveObj(currentTargetPos,duration);
             }
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            var unit = other.GetComponent<IPoolingUnit>();
+            var unit = other.GetComponent<AbstractFactoryPoolObjectItem>();
             if (unit == null)
             {
                 return;
@@ -49,24 +61,20 @@ namespace Games.SquareFall
             {
                 gameObject.SetActive(false);
                 onGameOver?.Invoke();
+                poolManager.UnUseAll();
                 return;
             }
+            unit.UnUse();
             onScore?.Invoke();
             
         }
 
         public void reset()
         {
-            gameOver = false;
-            score = 0;
             transform.position = Vector3.zero;
             transform.gameObject.SetActive(true);
         }
 
-        public void AddScore()
-        {
-            score += 10;
-            Debug.Log(score);
-        }
+       
     }
 }

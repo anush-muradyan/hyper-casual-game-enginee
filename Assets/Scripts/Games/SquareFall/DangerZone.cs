@@ -1,21 +1,21 @@
-using Core.Pooling;
+using Core.ObjectPooling;
+using ObjectPoolingV2.CorePooling.Factory;
 using UnityEngine;
 
 namespace Games.SquareFall
 {
     public class DangerZone : MonoBehaviour
     {
-        [SerializeField] private ObjectPooling objectPooling;
+        [SerializeField] private PoolManager poolManager;
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            var a = other.GetComponent<IPoolingUnit>();
+            var a = other.GetComponent<AbstractFactoryPoolObjectItem>();
              if (a != null)
              {
-                 objectPooling.BackToPool(other.gameObject);
+                 a.UnUse();
              }
 
-          
         }
     }
 }
