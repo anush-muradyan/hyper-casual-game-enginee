@@ -2,22 +2,24 @@ using System;
 
 namespace Core.MVVM.Command.Home {
 	public class StringCommand : ICommand<string> {
-		private event Action<string> callbacks;
+		private readonly Action<string> executor;
+		private readonly Func<string, bool> canExecute;
 
-		public bool CanExecute() {
-			return true;
+		public StringCommand(Action<string> executor, Func<string, bool> canExecute = null) {
+			this.executor = executor;
+			this.canExecute = canExecute;
 		}
 
 		public void Execute(string data) {
-			if (!CanExecute()) {
+			if (!CanExecute(data)) {
 				return;
 			}
 
-			callbacks?.Invoke(data);
+			executor?.Invoke(data);
 		}
 
-		public void Subscribe(Action<string> callback) {
-			callbacks += callback;
+		private bool CanExecute(string data) {
+			return canExecute != null && canExecute.Invoke(data);
 		}
 	}
 }

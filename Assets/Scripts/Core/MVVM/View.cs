@@ -9,11 +9,10 @@ namespace Core.MVVM {
 		where TViewModel : IViewModel<TModel>, new() where TModel : IModel {
 		public TViewModel ViewModel { get; private set; }
 
-		protected List<ComponentControl> Controls = new List<ComponentControl>();
+		protected List<StaticComponentControl> Controls = new List<StaticComponentControl>();
 
 		public void Init(TModel model) {
 			ViewModel = new TViewModel { Model = model };
-			ViewModel.Init();
 			Bind();
 			ViewModel.Model.OnPropertyChange += PropertyChange;
 			ViewModel.Model.ForceUpdate();
