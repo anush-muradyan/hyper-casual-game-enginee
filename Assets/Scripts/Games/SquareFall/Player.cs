@@ -11,43 +11,57 @@ namespace Games.SquareFall
         [SerializeField] private Transform moveTransform;
         [SerializeField] private PoolManager poolManager;
         
-        public UnityEvent onGameOver = new UnityEvent();
+        public UnityEvent onLoose = new UnityEvent();
         public UnityEvent onScore = new UnityEvent();
         
         
-        private Vector3 currentTargetPos;
+        private float fullMovePathLenght;
         private Vector3 finalPos;
-        private float duration;
+        private float moveDuration;
+        private int dir = 1;
+        private int velocity = 2;
+        private Tweener moveTweener;
 
-
-        void Start()
+        private void Start()
         {
             transform.position = Vector3.zero;
+            
             finalPos = 2 * moveTransform.localScale;
-            currentTargetPos = finalPos;
-            duration = 2f;
-            transform.DOMoveX(finalPos.x, 1f).OnComplete(MoveObj(currentTargetPos,duration)).SetDelay(0.5f);
+            fullMovePathLenght = Mathf.Abs(2 * finalPos.x);
+            moveDuration = 2 * Mathf.Abs(finalPos.x)/velocity;
+            
+            StartMovement(dir,moveDuration/2);
             
         }
 
-        private TweenCallback MoveObj(Vector3 pos,float moveDuration)
+        private void Move(int direction,float duration)
         {
-            transform.DOMoveX(pos.x, 2f).OnUpdate(OnChangeDirection).OnComplete(() => MoveObj(currentTargetPos,moveDuration));
+            moveTweener = transform.DOMoveX(direction * finalPos.x, duration).OnComplete(()=>
+            {
+                dir *= -1;
+                duration = velocity;
+                Move(dir, duration);
+            });
+        }
 
-            currentTargetPos = -currentTargetPos ;
-            moveDuration = (finalPos.x - transform.position.x) / 2f;
-            return null;
+        private void StartMovement(int direction,float duration)
+        {
+            Move(direction,duration);
         }
       
-        private void OnChangeDirection()
+        private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                transform.DOKill();
-                MoveObj(currentTargetPos,duration);
-            }
+            if (!Input.GetKeyDown(KeyCode.Space)) 
+                return;
+
+            moveTweener?.Kill();
+            var length = fullMovePathLenght - Mathf.Abs( finalPos.x*dir - transform.position.x);
+            var time = (velocity * length)/Mathf.Abs(2 * finalPos.x);
+            dir *= -1;
+            Move(dir,time);
         }
 
+        
         private void OnTriggerEnter2D(Collider2D other)
         {
             var unit = other.GetComponent<AbstractFactoryPoolObjectItem>();
@@ -60,7 +74,7 @@ namespace Games.SquareFall
             if (canplay.Equals(false))
             {
                 gameObject.SetActive(false);
-                onGameOver?.Invoke();
+                onLoose?.Invoke();
                 poolManager.UnUseAll();
                 return;
             }
@@ -75,6 +89,5 @@ namespace Games.SquareFall
             transform.gameObject.SetActive(true);
         }
 
-       
     }
 }

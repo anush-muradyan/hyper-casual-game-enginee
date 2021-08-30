@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Core1.Data
+namespace Core.Data
 {
     public  class ScreenSize : MonoBehaviour
     {

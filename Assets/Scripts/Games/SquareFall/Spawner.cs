@@ -1,6 +1,9 @@
 using System.Collections;
+using Core.GameStates;
 using ObjectPoolingV2.CorePooling.Generator;
 using UnityEngine;
+using Zenject.Asteroids;
+using GameStates = Core.GameStates.GameStates;
 
 namespace Games.SquareFall
 {
@@ -8,17 +11,33 @@ namespace Games.SquareFall
     {
         [SerializeField] private EnemyGenerator enemyGenerator;
         [SerializeField] private BonusItemGenerator bonusItemGenerator;
-
-        public bool canplay;
+        
+       
         private int count;
         private const float WAIT_FOR_SECOND = 0.7f;
 
         private Coroutine coroutine;
-       
+
+        private void Start()
+        {
+            GameStates.CanPlay = true;
+            coroutine = StartCoroutine(CreateEnemiesAndBonusItems());
+        }
+
+
+        public void Run()
+        {
+            coroutine = StartCoroutine(CreateEnemiesAndBonusItems());
+        }
+
+        public void Stop()
+        {
+            StopCoroutine(coroutine);
+        }
 
         public IEnumerator CreateEnemiesAndBonusItems()
         {
-            while (canplay)
+            while (GameStates.CanPlay)
             {
                 yield return new WaitForSeconds(WAIT_FOR_SECOND);
 

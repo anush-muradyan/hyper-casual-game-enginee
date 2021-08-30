@@ -6,14 +6,12 @@ namespace Games.SquareFall
 {
     public class DangerZone : MonoBehaviour
     {
-        [SerializeField] private PoolManager poolManager;
-
         private void OnTriggerEnter2D(Collider2D other)
         {
-            var a = other.GetComponent<AbstractFactoryPoolObjectItem>();
-             if (a != null)
+            var poolObject = other.GetComponent<AbstractFactoryPoolObjectItem>();
+             if (poolObject != null)
              {
-                 a.UnUse();
+                 poolObject.UnUse();
              }
 
         }

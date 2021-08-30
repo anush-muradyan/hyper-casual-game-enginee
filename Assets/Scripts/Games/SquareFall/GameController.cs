@@ -1,3 +1,4 @@
+using Core.GameStates;
 using UnityEngine;
 
 namespace Games.SquareFall
@@ -6,27 +7,18 @@ namespace Games.SquareFall
     {
         [SerializeField] private Player player;
         [SerializeField] private Spawner spawner;
-
-        private Coroutine coroutine;
+        
         private int score;
 
         private void Start()
         {
-            startGame();
             player.onScore.AddListener(OnScore);
-            player.onGameOver.AddListener(OnGameOver);
-        }
-
-        private void startGame()
-        {
-            
-            spawner.canplay = true;
-            coroutine=StartCoroutine(spawner.CreateEnemiesAndBonusItems());
+            player.onLoose.AddListener(OnGameLoose);
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.A) && !spawner.canplay)
+            if (Input.GetKeyDown(KeyCode.A) && ! GameStates.CanPlay)
             {
                 RestartGame();
             }
@@ -34,10 +26,11 @@ namespace Games.SquareFall
 
         private void RestartGame()
         {
-            StopCoroutine(coroutine);
+            spawner.Stop();
             score = 0;
             player.reset();
-            startGame();
+            GameStates.CanPlay = true;
+            spawner.Run();
         }
         
         private void OnScore()
@@ -46,10 +39,10 @@ namespace Games.SquareFall
             Debug.Log(score);
         }
 
-        private void OnGameOver()
+        private void OnGameLoose()
         {
-            StopCoroutine(coroutine);
-            spawner.canplay = false;
+            spawner.Stop();
+            GameStates.CanPlay = false;
             score = 0;
             Debug.LogError("GAME OVER!");
           
