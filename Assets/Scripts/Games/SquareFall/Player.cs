@@ -10,11 +10,11 @@ namespace Games.SquareFall
     {
         [SerializeField] private Transform moveTransform;
         [SerializeField] private PoolManager poolManager;
-        
+
         public UnityEvent onLoose = new UnityEvent();
         public UnityEvent onScore = new UnityEvent();
-        
-        
+
+
         private float fullMovePathLenght;
         private Vector3 finalPos;
         private float moveDuration;
@@ -25,43 +25,44 @@ namespace Games.SquareFall
         private void Start()
         {
             transform.position = Vector3.zero;
-            
+
             finalPos = 2 * moveTransform.localScale;
             fullMovePathLenght = Mathf.Abs(2 * finalPos.x);
-            moveDuration = 2 * Mathf.Abs(finalPos.x)/velocity;
-            
-            StartMovement(dir,moveDuration/2);
-            
+            moveDuration = 2 * Mathf.Abs(finalPos.x) / velocity;
+
+            StartMovement(dir, moveDuration / 2);
         }
 
-        private void Move(int direction,float duration)
+        private void Move(int direction, float duration)
         {
-            moveTweener = transform.DOMoveX(direction * finalPos.x, duration).OnComplete(()=>
-            {
-                dir *= -1;
-                duration = velocity;
-                Move(dir, duration);
-            });
+            moveTweener?.Kill();
+            moveTweener = transform.DOMoveX(direction * finalPos.x, duration).OnComplete(() =>
+                {
+                    dir *= -1;
+                    duration = velocity;
+                    Move(dir, duration);
+                })
+                .SetEase(Ease.Linear);
         }
 
-        private void StartMovement(int direction,float duration)
+        private void StartMovement(int direction, float duration)
         {
-            Move(direction,duration);
+            Move(direction, duration);
         }
-      
+
         private void Update()
         {
-            if (!Input.GetKeyDown(KeyCode.Space)) 
+            if (!Input.GetKeyDown(KeyCode.Space))
                 return;
 
-            moveTweener?.Kill();
-            var length = fullMovePathLenght - Mathf.Abs( finalPos.x*dir - transform.position.x);
-            var time = (velocity * length)/Mathf.Abs(2 * finalPos.x);
+
+            var length = fullMovePathLenght - Mathf.Abs(finalPos.x * dir - transform.position.x);
+            var time = (velocity * length) / Mathf.Abs(2 * finalPos.x);
             dir *= -1;
-            Move(dir,time);
+            Move(dir, time);
         }
 
-        
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             var unit = other.GetComponent<AbstractFactoryPoolObjectItem>();
@@ -78,9 +79,9 @@ namespace Games.SquareFall
                 poolManager.UnUseAll();
                 return;
             }
+
             unit.UnUse();
             onScore?.Invoke();
-            
         }
 
         public void reset()
@@ -88,6 +89,5 @@ namespace Games.SquareFall
             transform.position = Vector3.zero;
             transform.gameObject.SetActive(true);
         }
-
     }
 }

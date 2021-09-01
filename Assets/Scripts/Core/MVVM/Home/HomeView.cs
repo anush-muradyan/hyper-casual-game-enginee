@@ -1,3 +1,4 @@
+using System.Linq;
 using Core.MVVM.Controls;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,8 +23,7 @@ namespace Core.MVVM.Home {
 			base.OnDisable();
 			button.onClick.RemoveListener(onButtonClick);
 		}
-
-
+		
 		private void onButtonClick() {
 			ViewModel.UpdateContentCommand.Execute(inputField.text);
 		}

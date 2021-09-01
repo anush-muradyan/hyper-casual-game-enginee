@@ -14,6 +14,11 @@ namespace Core.MVVM.Controls {
 	public abstract class ComponentControl<T> : ComponentControl {
 		[SerializeField] private T property;
 
-		public T Property => property;
+		public T Property
+		{
+			get => property;
+
+			set => property = value;
+		}
 	}
 }

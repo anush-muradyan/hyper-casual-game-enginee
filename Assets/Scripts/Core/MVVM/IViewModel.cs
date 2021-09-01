@@ -1,16 +1,25 @@
-using Core.MVVM.Home;
+namespace Core.MVVM
+{
+    public delegate void PropertyChangeDelegate(string propertyName, object obj);
 
-namespace Core.MVVM {
-	public interface IViewModel {
-	}
+    public interface IViewModel
+    {
+    }
 
-	public interface IViewModel<TModel> : IViewModel where TModel : IModel {
-		TModel Model { get; set; }
-		void Init();
-	}
+    public interface IViewModel<TModel> : IViewModel where TModel : IModel
+    {
+        TModel Model { get; set; }
+        void Init();
+    }
 
-	public interface IModel {
-		event PropertyChangeDelegate OnPropertyChange;
-		void ForceUpdate();
-	}
+    public interface INotifyPropertyChange
+    {
+        event PropertyChangeDelegate OnPropertyChange;
+        void PropertyChange(string propertyName, object value);
+    }
+
+    public interface IModel : INotifyPropertyChange
+    {
+        void ForceUpdate();
+    }
 }
