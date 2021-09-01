@@ -26,9 +26,7 @@ namespace Core.MVVM.Image
 
         private void setImageButtonClick()
         {
-            var ima = imagePrefab.sprite.texture;
             ViewModel.OnNotify?.Invoke(imagePrefab, imageContainer);
-            ViewModel.UpdateImageSetterCommand.Execute(ima);
         }
     }
 }

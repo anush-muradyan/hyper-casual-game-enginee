@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Core.Data;
 using Core.Data.Game;
 using Core.Game;
+
 using UnityEngine;
+using UnityEngine.Events;
 using Zenject;
 
 namespace Core
@@ -17,11 +19,12 @@ namespace Core
     {
         [SerializeField] private GameItem gameItemPrefab;
         [SerializeField] private RectTransform container;
-        private IDataLoader dataLoader;
         private List<GameItem> gameItems = new List<GameItem>();
 
-
+        private IGameSelectorView view;
+        private IDataLoader dataLoader;
         public event Action<GameInfo> OnGameSelected;
+        public UnityEvent<GamesData> OnGameInfos;
 
         [Inject]
         private void construct(IDataLoader dataLoader)
@@ -44,13 +47,13 @@ namespace Core
             }
 
             createGameInfos(games);
+            OnGameInfos.AddListener(createGameInfos);
         }
 
         private void createGameInfos(GamesData games)
         {
             foreach (GameInfo game in games.Games)
             {
-
                 createGameInfo(game);
             }
         }
@@ -62,6 +65,7 @@ namespace Core
             item.OnSelected += OnGameSelected;
             item.Setup(game);
         }
+
 
         public void Dispose()
         {

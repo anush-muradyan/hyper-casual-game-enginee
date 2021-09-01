@@ -20,7 +20,7 @@ namespace Core
 
         private void start()
         {
-            viewManager.Startup();
+          //  viewManager.Startup();
         }
     }
 }
