@@ -17,7 +17,7 @@ namespace Core.MVVM.Image
             imageSetterButton.onClick.AddListener(setImageButtonClick);
         }
 
-        public override void Bind()
+        protected override void Bind()
         {
             base.Bind();
             Controls.Add(imageComponent);

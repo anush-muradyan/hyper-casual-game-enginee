@@ -27,10 +27,9 @@ namespace Core.MVVM.Image
 
             for (int i = 0; i < images.Length; i++)
             {
+                UpdateImageSetterCommand.Execute(images[i]);
                 var image = Object.Instantiate(prefab, container);
                 Debug.Log(image.sprite.name);
-                UpdateImageSetterCommand.Execute(images[i]);
-
             }
         }
 

@@ -22,7 +22,7 @@ namespace Core.MVVM
             ViewModel.Model.ForceUpdate();
         }
 
-        public virtual void Bind()
+        protected virtual void Bind()
         {
         }
 

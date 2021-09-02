@@ -9,7 +9,7 @@ namespace Core.MVVM.Home {
 		[SerializeField] private InputField inputField;
 		[SerializeField] private Button button;
 
-		public override void Bind() {
+		protected override void Bind() {
 			base.Bind();
 			Controls.Add(contentText);
 		}
