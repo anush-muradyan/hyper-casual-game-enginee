@@ -1,3 +1,4 @@
+using System.Linq;
 using Core.MVVM.Controls;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,7 @@ namespace Core.MVVM.Home {
 		[SerializeField] private Button button;
 		[SerializeField] private Button loadTexturesButton;
 
-		public override void Bind() {
+		protected override void Bind() {
 			base.Bind();
 			Controls.Add(contentTextStatic);
 			Controls.Add(imageCollectionStaticComponent);
@@ -27,7 +28,7 @@ namespace Core.MVVM.Home {
 			button.onClick.RemoveListener(onButtonClick);
 			loadTexturesButton.onClick.RemoveListener(onLoadTexturesButtonClick);
 		}
-
+		
 		private void onButtonClick() {
 			ViewModel.UpdateContentCommand.Execute(inputField.text);
 		}
