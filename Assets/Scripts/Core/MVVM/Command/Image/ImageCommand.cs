@@ -17,7 +17,6 @@ namespace Core.MVVM.Command.Image
                 return;
             }
 
-            Debug.Log(data);
             callbacks?.Invoke(data);
         }
 

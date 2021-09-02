@@ -12,7 +12,6 @@ namespace Core.MVVM
 
 		private void Start()
 		{
-			//homeView.Init(new HomeModel { ContentText = "Hello!" });
 			imageView.Init(new ImageModel {});
 
 		}

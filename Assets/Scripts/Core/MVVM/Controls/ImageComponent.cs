@@ -6,7 +6,6 @@ namespace Core.MVVM.Controls
     {
         public override void SetValue(object value)
         {
-            Debug.Log("From Set Value");
             var texture = (Texture2D) value;
             if (texture == null)
             {

@@ -12,7 +12,7 @@ namespace Core.MVVM
         public TViewModel ViewModel { get; private set; }
 
         protected List<ComponentControl> Controls = new List<ComponentControl>();
-
+        private bool isdisposed;
         public void Init(TModel model)
         {
             ViewModel = new TViewModel {Model = model};
@@ -25,8 +25,7 @@ namespace Core.MVVM
         protected virtual void Bind()
         {
         }
-
-
+        
         protected virtual void OnEnable()
         {
         }
@@ -37,7 +36,7 @@ namespace Core.MVVM
 
         protected virtual void OnDestroy()
         {
-            Dispose();
+            ((IDisposable)(this)).Dispose();
         }
 
         private void PropertyChange(string propertyName, object obj)
@@ -49,13 +48,22 @@ namespace Core.MVVM
                 Debug.LogError("Componenet is null.");
                 return;
             }
-            
+
             component.SetValue(obj);
         }
-
-        public void Dispose()
+        void IDisposable.Dispose()
         {
+            Disposing();
+        }
+
+        protected virtual void Disposing()
+        {
+            if (isdisposed)
+            {
+                return;
+            }
             ViewModel.Model.OnPropertyChange -= PropertyChange;
+            isdisposed = true;
         }
     }
 }
