@@ -10,6 +10,7 @@ namespace Core.MVVM {
 		public TViewModel ViewModel { get; private set; }
 
 		protected List<StaticComponentControl> Controls = new List<StaticComponentControl>();
+		private bool isDisposed;
 
 		public void Init(TModel model) {
 			ViewModel = new TViewModel { Model = model };
@@ -29,7 +30,7 @@ namespace Core.MVVM {
 		}
 
 		protected virtual void OnDestroy() {
-			Dispose();
+			((IDisposable)this).Dispose();
 		}
 
 		private void PropertyChange(string propertyName, object obj) {
@@ -41,8 +42,17 @@ namespace Core.MVVM {
 			component.SetValue(obj);
 		}
 
-		public void Dispose() {
+		protected virtual void Disposing() {
 			ViewModel.Model.OnPropertyChange -= PropertyChange;
+		}
+
+		void IDisposable.Dispose() {
+			if (isDisposed) {
+				return;
+			}
+
+			Disposing();
+			isDisposed = true;
 		}
 	}
 }

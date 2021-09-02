@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Core.MVVM.Controls {
-	public class ImageCollectionComponentControl : ComponentControl {
+	public class ImageCollectionComponentControl : StaticComponentControl {
 		[SerializeField] private UnityEngine.UI.Image imagePrefab;
 		[SerializeField] private RectTransform imagesContainer;
 		private List<UnityEngine.UI.Image> images;

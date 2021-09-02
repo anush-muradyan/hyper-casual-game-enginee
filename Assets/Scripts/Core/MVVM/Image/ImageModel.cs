@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Core.MVVM.Home;
 using UnityEngine;
 
 namespace Core.MVVM.Image {
 	public class ImageModel : IModel {
-
 		private List<Texture2D> textures;
 
 		public List<Texture2D> Textures {

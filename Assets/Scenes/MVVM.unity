@@ -470,7 +470,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &679896514
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1063,7 +1063,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 40, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1398669744
 MonoBehaviour:
@@ -1799,7 +1799,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1800965025
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1872,9 +1872,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b87adbae1bd48e180b8c02039e4e78a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contentText: {fileID: 1970564919}
+  contentTextStatic: {fileID: 0}
+  imageCollectionStaticComponent: {fileID: 0}
   inputField: {fileID: 1658725686}
   button: {fileID: 1350109723}
+  loadTexturesButton: {fileID: 0}
 --- !u!1 &1904269144
 GameObject:
   m_ObjectHideFlags: 0
