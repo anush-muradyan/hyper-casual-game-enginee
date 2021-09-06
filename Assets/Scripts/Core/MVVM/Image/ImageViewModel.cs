@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Core.MVVM.Command;
 using Core.MVVM.Command.Image;
+using Core.MVVM.Home;
 using UnityEngine;
 
 namespace Core.MVVM.Image {
@@ -9,7 +10,7 @@ namespace Core.MVVM.Image {
 		public ImageModel Model { get; set; }
 
 		public ICommand<List<Texture2D>> LoadTexturesCommand =>
-			new LoadTexturesCommand(list => Model.Textures = list);
+			new LoadTexturesCommand(list => Model.Textures = new ObservableList<Texture2D>(list));
 
 		public ICommand<int> RemoveImageCommand { get; }
 

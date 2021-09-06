@@ -9,6 +9,10 @@ namespace Core.MVVM.Home {
 		[SerializeField] private InputField inputField;
 		[SerializeField] private Button button;
 		[SerializeField] private Button loadTexturesButton;
+		
+		[SerializeField] private Button addTextureButton;
+		[SerializeField] private Button insertTextureButton;
+		[SerializeField] private Button removeTextureButton;
 
 		public override void Bind() {
 			base.Bind();
@@ -20,12 +24,18 @@ namespace Core.MVVM.Home {
 			base.OnEnable();
 			button.onClick.AddListener(onButtonClick);
 			loadTexturesButton.onClick.AddListener(onLoadTexturesButtonClick);
+			addTextureButton.onClick.AddListener(onAddTextureButton);
+			insertTextureButton.onClick.AddListener(onInsertTexturesButtonClick);
+			removeTextureButton.onClick.AddListener(onRemoveTextureButton);
 		}
 
 		protected override void OnDisable() {
 			base.OnDisable();
 			button.onClick.RemoveListener(onButtonClick);
 			loadTexturesButton.onClick.RemoveListener(onLoadTexturesButtonClick);
+			addTextureButton.onClick.RemoveListener(onAddTextureButton);
+			insertTextureButton.onClick.RemoveListener(onInsertTexturesButtonClick);
+			removeTextureButton.onClick.RemoveListener(onRemoveTextureButton);
 		}
 
 		private void onButtonClick() {
@@ -34,6 +44,21 @@ namespace Core.MVVM.Home {
 
 		private void onLoadTexturesButtonClick() {
 			ViewModel.LoadTexturesCommand.Execute();
+		}
+
+		private void onAddTextureButton()
+		{
+			ViewModel.LoadTexture.Execute();
+		}
+
+		private void onInsertTexturesButtonClick()
+		{
+			ViewModel.InsertTexture.Execute();
+		}
+
+		private void onRemoveTextureButton()
+		{
+			ViewModel.RemoveTexture.Execute();
 		}
 	}
 }
