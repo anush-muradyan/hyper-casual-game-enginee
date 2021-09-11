@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Core.MVVM.View;
 using UnityEngine;
 
 namespace Core.MVVM.Home
@@ -53,5 +54,6 @@ namespace Core.MVVM.Home
                 PropertyChange(value, propertyInfo.Name);
             }
         }
+        
     }
 }

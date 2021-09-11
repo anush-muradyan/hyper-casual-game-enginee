@@ -1,6 +1,7 @@
 using System.Linq;
 using Core.MVVM.Command;
 using Core.MVVM.Command.Home;
+using Core.MVVM.View;
 using UnityEngine;
 
 namespace Core.MVVM.Home

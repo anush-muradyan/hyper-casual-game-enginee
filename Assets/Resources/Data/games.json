@@ -3,8 +3,8 @@
   "games": [
     {
       "id": 0,
-      "title": "Game 1",
-      "prefabName": "Game1",
+      "title": "Square Fall",
+      "prefabName": "SquareFall",
       "imageUrl": "www.some.com/image1.png"
     },
     {

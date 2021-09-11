@@ -1,6 +1,5 @@
 using System;
 using Core.Data;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +7,7 @@ namespace Core.Game
 {
     public class GameItem : MonoBehaviour, IGameItem
     {
-        [SerializeField] private TextMeshProUGUI gameTitleText;
+        [SerializeField] private Text gameTitleText;
         [SerializeField] private Button button;
 
         private GameInfo gameInfo;

@@ -2,20 +2,15 @@ using UnityEngine;
 
 namespace Core.Data
 {
-    public  class ScreenSize : MonoBehaviour
+    public class ScreenSize : MonoBehaviour
     {
         [SerializeField] private Camera camera;
-        public float height { get; private set; }
-        public float width { get; private set; }
-
+        public Vector2 Size { get; private set; }
 
         private void Awake()
         {
-            var a= camera.ScreenPointToRay(Vector3.right).origin;
-            width = a.x;
-            height = a.y;
+            var point = camera.ScreenPointToRay(Vector3.right).origin;
+            Size = new Vector2(point.x, point.y);
         }
-
-        
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using Core.MVVM.Command;
 using Core.MVVM.Command.Image;
 using Core.MVVM.Home;
+using Core.MVVM.View;
 using UnityEngine;
 
 namespace Core.MVVM.Image {

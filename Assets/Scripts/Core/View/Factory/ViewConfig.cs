@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Core.View.Factory
 {
-    public struct ViewConfig : IFactoryConfig
+    public class ViewConfig : IFactoryConfig
     {
         public string Path { get; }
         public RectTransform Container { get; }

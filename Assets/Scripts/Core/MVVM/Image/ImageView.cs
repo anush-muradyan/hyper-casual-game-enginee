@@ -1,4 +1,5 @@
 using Core.MVVM.Controls;
+using Core.MVVM.View;
 using UnityEngine;
 using UnityEngine.UI;
 

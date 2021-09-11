@@ -1,7 +1,12 @@
 namespace Core.GameStates
 {
-    public static class GameStates
+    public enum GameState
     {
-        public static bool CanPlay=false;
+        Idle,
+        Playing,
+        Pause,
+        Resume,
+        GameOver,
+        Win
     }
 }
