@@ -1,32 +1,38 @@
 using Core.Convertor;
 using Core.Data;
 using Core.Game;
-using Core.GameCore;
+using Core.ObjectPooling;
 using Core.View;
 using Core.View.Factory;
+using DefaultNamespace;
+using Games.SquareFall;
+using ObjectPoolingV2.CorePooling.Generator;
 using UnityEngine;
 using Zenject;
 
-namespace Core.Di.Installers
-{
-    public class Installer : MonoInstaller<Installer>
-    {
-        [SerializeField] private ViewManager viewManager;
+namespace Core.Di.Installers {
+    public class Installer : MonoInstaller<Installer> {
+        [SerializeField] private PoolManager poolManager;
+        [SerializeField] private ScreenSize screenSize;
 
-        [SerializeField] private GameEngine gameEngine;
-        private const string GAME_PATH = "Prefabs/Games/";
+        [SerializeField] private EnemyGenerator enemyGenerator;
+        [SerializeField] private BonusItemGenerator bonusItemGenerator;
 
-        public override void InstallBindings()
-        {
+        public override void InstallBindings() {
             Container.Bind<IConvertor>().To<JsonConvertor>().AsSingle().NonLazy();
             Container.Bind<IDataLoader>().To<DataLoader>().AsSingle().NonLazy();
-            Container.Bind<ViewFactory>().AsSingle().WithArguments(viewManager.GetConfig()).NonLazy();
-            Container.Bind<IViewManager<ViewConfig>>().FromInstance(viewManager).AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<Startup>().AsSingle().NonLazy();
-            //Container.Bind<INotify>().To<ViewManager>().FromInstance(viewManager).AsSingle().NonLazy();
 
-            Container.Bind<GameConfig>().AsSingle().WithArguments(GAME_PATH, viewManager.GetConfig().Container).NonLazy();
-            Container.Bind<GameEngine>().FromInstance(gameEngine).AsSingle().NonLazy();
+            Container.Bind<SessionSquareFall>().AsSingle().NonLazy();
+
+            Container.Bind<ScreenSize>().FromInstance(screenSize).AsSingle().NonLazy();
+            Container.Bind<PoolManager>().FromInstance(poolManager).AsSingle().NonLazy();
+
+            Container.Bind<EnemyGenerator>().FromInstance(enemyGenerator).AsSingle().NonLazy();
+            Container.Bind<BonusItemGenerator>().FromInstance(bonusItemGenerator).AsSingle().NonLazy();
+
+            Container.BindInterfacesTo<Startup.Startup>().AsSingle().NonLazy();
+           
+
         }
     }
 }

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace ObjectPoolingV2.CorePooling.Factory.ConcreteFactoryPoolObjectItem
 {
     public class BonusItem : AbstractFactoryPoolObjectItem
@@ -15,10 +13,7 @@ namespace ObjectPoolingV2.CorePooling.Factory.ConcreteFactoryPoolObjectItem
             return addScore;
         }
         
-        public virtual void Update()
-            {
-                transform.Translate(Vector3.down * Time.deltaTime * 5f);
-            }
+       
         }
     }
 
