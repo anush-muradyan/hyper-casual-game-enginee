@@ -660,6 +660,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poolManager: {fileID: 1950619309}
   screenSize: {fileID: 1319828850}
+  gameInput:
+    inputType: 0
+    mouseInput:
+      type: 0
+    keyboardInput:
+      keyCode: 32
   enemyGenerator: {fileID: 1876022347}
   bonusItemGenerator: {fileID: 120634925}
 --- !u!114 &1669865824
@@ -735,7 +741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 698a1f0d9b284d178f313ad7b3c46eea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gamesPath: Prefabs/Games/
+  gamesPath: Prefabs/Games
 --- !u!1 &1876022345
 GameObject:
   m_ObjectHideFlags: 0

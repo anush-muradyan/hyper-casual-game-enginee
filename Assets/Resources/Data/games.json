@@ -2,13 +2,13 @@
   "version": "1.0",
   "games": [
     {
-      "id": 0,
+      "id": "SquareFall",
       "title": "Square Fall",
       "prefabName": "SquareFall",
       "imageUrl": "www.some.com/image1.png"
     },
     {
-      "id": 1,
+      "id": "Game2",
       "title": "Game 2",
       "prefabName": "Game2",
       "imageUrl": "www.some.com/image2.png"

@@ -1,11 +1,15 @@
 using System;
-using DefaultNamespace.Games;
+using System.Collections.Generic;
+using Core.AbstractFactory;
+using Games.SquareFall;
 using Zenject;
-using IFactory = Core.AbstractFactory.IFactory;
 using Object = UnityEngine.Object;
 
 namespace Games {
-    public class GameFactory : IFactory {
+    public class GameFactory {
+        public static Dictionary<string, Type> Games = new Dictionary<string, Type>() {
+            {"SquareFall", typeof(SquareFallGameController)}
+        };
         public class Factory : PlaceholderFactory<IGamePlay> {
         }
 
@@ -15,7 +19,7 @@ namespace Games {
             this.container = container;
         }
 
-        public IGamePlay Create<T>(string id) where T : IGamePlay {
+        public T Create<T>(string id) where T : IGamePlay {
             var gamePlay = container.Resolve<T>();
             if (gamePlay == null) {
                 throw new Exception("Cant find game play with id: " + id);
@@ -24,8 +28,13 @@ namespace Games {
             return gamePlay;
         }
 
-        public void Quit<T>(T item) where T :IFactory {
-            Object.Destroy(item as Object);
+        public IGamePlay CreateV2(string id) {
+            var gamePlay = container.ResolveId(Games[id], id) as IGamePlay;
+            if (gamePlay == null) {
+                throw new Exception("Cant find game play with id: " + id);
+            }
+
+            return gamePlay;
         }
     }
 }

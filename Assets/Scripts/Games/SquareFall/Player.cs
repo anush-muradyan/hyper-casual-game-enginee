@@ -1,3 +1,5 @@
+using Core.GameStates;
+using Core.InputHandler;
 using Core.ObjectPooling;
 using DG.Tweening;
 using ObjectPoolingV2.CorePooling.Factory;
@@ -9,10 +11,15 @@ namespace Games.SquareFall {
     public class Player : MonoBehaviour {
         [SerializeField] private Transform moveTransform;
         private PoolManager poolManager;
+        private IInput input;
+        private Session session;
+
 
         [Inject]
-        private void construct(PoolManager poolManager) {
+        private void construct(PoolManager poolManager, IInput input, Session session) {
             this.poolManager = poolManager;
+            this.input = input;
+            this.session = session;
         }
 
         public UnityEvent onLoose = new UnityEvent();
@@ -25,15 +32,26 @@ namespace Games.SquareFall {
         private Tweener moveTweener;
 
         private void Start() {
-            transform.position = Vector3.zero;
+            input.OnTouch.AddListener(changeMoveDirection);
 
+            transform.position = Vector3.zero;
             finalPos = 2 * moveTransform.localScale;
             moveDuration = 2 * Mathf.Abs(finalPos.x) / velocity;
-
             StartMovement(dir, moveDuration / 2);
         }
 
+        private void changeMoveDirection() {
+            if (session.State != GameState.Playing) {
+                return;
+            }
+            var length = Mathf.Abs(2 * finalPos.x) - Mathf.Abs(finalPos.x * dir - transform.position.x);
+            var time = (velocity * length) / Mathf.Abs(2 * finalPos.x);
+            dir *= -1;
+            StartMovement(dir, time);
+        }
+
         private void Move(int direction, float duration) {
+            
             moveTweener?.Kill();
             moveTweener = transform.DOMoveX(direction * finalPos.x, duration).OnComplete(() => {
                     dir *= -1;
@@ -46,18 +64,6 @@ namespace Games.SquareFall {
         private void StartMovement(int direction, float duration) {
             Move(direction, duration);
         }
-
-        private void Update() {
-            if (!Input.GetKeyDown(KeyCode.Mouse0))
-                return;
-
-
-            var length = Mathf.Abs(2 * finalPos.x) - Mathf.Abs(finalPos.x * dir - transform.position.x);
-            var time = (velocity * length) / Mathf.Abs(2 * finalPos.x);
-            dir *= -1;
-            StartMovement(dir, time);
-        }
-
 
         private void OnTriggerEnter2D(Collider2D other) {
             var unit = other.GetComponent<AbstractFactoryPoolObjectItem>();
@@ -78,8 +84,8 @@ namespace Games.SquareFall {
         }
 
         public void reset() {
-            transform.position = Vector3.zero;
             transform.gameObject.SetActive(true);
+            transform.position = new Vector3(0f,transform.position.y);
         }
     }
 }

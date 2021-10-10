@@ -10,6 +10,6 @@ namespace Core.Startup {
 
         public void Initialize() {
             navigator.Startup();
-        }   
+        }
     }
 }

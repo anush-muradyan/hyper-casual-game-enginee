@@ -4,9 +4,6 @@ namespace Core.GameStates
     {
         Idle,
         Playing,
-        Pause,
-        Resume,
         GameOver,
-        Win
     }
 }

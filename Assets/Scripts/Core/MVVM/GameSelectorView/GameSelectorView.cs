@@ -1,20 +1,19 @@
+using Core.AbstractFactory;
 using Core.Data;
 using Core.MVVM.View;
 using Games;
 using Games.SquareFall;
 using UnityEngine;
 using Zenject;
-using IFactory = Core.AbstractFactory.IFactory;
 #if ENABLE_CLOUD_SERVICES_ANALYTICS
 using UnityEngine.Analytics;
 
 #endif
 
 namespace Core.MVVM.GameSelectorView {
-    public class GameSelectorView : View<GameSelectorViewModel, GameSelectorModel> {
+    public class GameSelectorView : View<GameSelectorViewModel, GameSelectorModel>, IQuit {
         [SerializeField] private RectTransform container;
         [Inject] private GameFactory gameFactory;
-        [Inject] private Context.Context context;
 
         private void Start() {
             ViewModel.OnGameSelected += handleGameSelected;
@@ -25,9 +24,14 @@ namespace Core.MVVM.GameSelectorView {
 #if ENABLE_CLOUD_SERVICES_ANALYTICS
             Analytics.CustomEvent($"{gameInfo.Id}");
 #endif
+
             transform.gameObject.SetActive(false);
-            var game = gameFactory.Create<SquareFallGameController>(gameInfo.Id);
-            context.Factory = game as IFactory;
+            //var game = gameFactory.Create<SquareFallGameController>(gameInfo.Id);
+            //context.QuitItem = game as IQuit;
+        }
+
+        public void Quit() {
+            gameObject.SetActive(false);
         }
     }
 }
