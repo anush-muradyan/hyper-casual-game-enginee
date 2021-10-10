@@ -8,6 +8,5 @@ namespace Games.SquareFall
         {
             Move();
         }
-        
     }
 }
